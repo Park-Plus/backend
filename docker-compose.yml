@@ -1,0 +1,48 @@
+version: "3.5"
+# All parameters used are in .env file
+services:
+  parkplus-backend:
+    image: mattiaeffendi/parkplus:test
+    container_name: parkplus-backend
+    environment:
+      - XDEBUG_MODE=${XDEBUG_MODE}
+    user: "www-data:www-data"
+    volumes:
+      # Code
+      - .:/var/www/html:cached
+      # container /tmp folder, used for profiler and other stuff
+      - ./private/tmp:/tmp:cached
+    ports:
+      - ${PHP_HOST_PORT}:80
+    networks:
+      backend:
+        aliases:
+          - parkplus-backend
+
+  parkplus-db:
+    image: mysql:8
+    # !IMPORTANT!: This must be the same as DB_HOST variable in .env file
+    container_name: parkplus-db
+    volumes:
+      # Persistent DB data
+      - parkplus-db-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    ports:
+      - ${MYSQL_HOST_PORT}:3306
+    networks:
+      backend:
+        aliases:
+          - parkplus-db
+
+volumes:
+  parkplus-db-data:
+    driver: local
+
+networks:
+  backend:
+    name: parkplus-network
+
