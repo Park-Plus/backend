@@ -60,6 +60,7 @@ $app->singleton(
 */
 
 $app->configure('app');
+$app->configure('auth');
 
 /*
 |--------------------------------------------------------------------------
@@ -76,9 +77,9 @@ $app->middleware([
     App\Http\Middleware\QueryLogMiddleware::class
 ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    'auth' => App\Http\Middleware\Authenticate::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -91,9 +92,18 @@ $app->middleware([
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+
+if (!class_exists('JWTAuth')) {
+    class_alias('Tymon\JWTAuth\Facades\JWTAuth', 'JWTAuth');
+}
+
+if (!class_exists('JWTFactory')) {
+    class_alias('Tymon\JWTAuth\Facades\JWTFactory', 'JWTFactory');
+}
 
 /*
 |--------------------------------------------------------------------------
