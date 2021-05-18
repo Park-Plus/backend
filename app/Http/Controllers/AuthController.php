@@ -25,7 +25,7 @@ class AuthController extends Controller
     public function login()
     {
         $credentials = request(['email', 'password']);
-        Auth::factory()->setTTL(1);
+        Auth::factory()->setTTL(60);
         Auth::factory()->setRefreshTTL(60);
         if (!$token = Auth::attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -61,7 +61,7 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        Auth::factory()->setTTL(1);
+        Auth::factory()->setTTL(60);
         return $this->respondWithToken(Auth::refresh());
     }
 

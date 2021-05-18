@@ -29,7 +29,7 @@ class UserFactory extends Factory
             'surname' => $this->faker->lastName,
             'cf' => $this->faker->taxId(),
             'email' => $this->faker->unique()->safeEmail,
-            'profile_picture' => 'https://picsum.photos/300/300?random=1',
+            'profile_picture' => "https://avatars.githubusercontent.com/u/".rand(1, 100000),
             'password' => Hash::make('password')
         ];
     }

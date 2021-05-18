@@ -17,14 +17,27 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+$router->group(['prefix' => 'user', 'middleware' => 'jwt.auth'], function() use ($router){
+    $router->get('me', 'UserController@me');
+    $router->group(['prefix' => 'vehicles'], function() use ($router){
+        $router->get('list', 'VehicleController@list');
+        $router->get('vehicle/{vehicleID}', 'VehicleController@getByID');
+        $router->post('add', 'VehicleController@insert');
+        $router->delete('remove', 'VehicleController@remove');
+    });
+    $router->get('invoices', 'UserController@invoices');
+});
+
 $router->group(['prefix' => 'auth'], function () use ($router) {
     $router->post('login', 'AuthController@login');
     $router->post('refresh', 'AuthController@refresh');
+    $router->post('register', 'AuthController@create');
     $router->group(['middleware' => 'jwt.auth'] , function () use ($router){
         $router->post('logout', 'AuthController@logout');
         $router->get('me', 'AuthController@me');
     });
 });
+
 
 
 
