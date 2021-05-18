@@ -20,7 +20,7 @@ class Place extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'status'
+        'section', 'number', 'status'
     ];
 
     /**

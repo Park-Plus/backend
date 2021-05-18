@@ -60,4 +60,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function invoices(){
         return $this->hasMany(Invoice::class);
     }
+
+    public function stays(){
+        return $this->hasMany(Stay::class);
+    }
 }

@@ -25,7 +25,15 @@ $router->group(['prefix' => 'user', 'middleware' => 'jwt.auth'], function() use 
         $router->post('add', 'VehicleController@insert');
         $router->delete('remove', 'VehicleController@remove');
     });
+    $router->group(['prefix' => 'stays'], function() use ($router){
+        $router->get('lasts', 'StayController@lasts');
+    });
     $router->get('invoices', 'UserController@invoices');
+});
+
+$router->group(['prefix' => 'park', 'middleware' => 'jwt.auth'], function() use ($router){
+    $router->get('status', 'PlaceController@status');
+    $router->get('getFree', 'PlaceController@getFree');
 });
 
 $router->group(['prefix' => 'auth'], function () use ($router) {

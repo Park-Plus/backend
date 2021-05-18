@@ -15,7 +15,8 @@ class CreatePlacesTable extends Migration
     {
         Schema::create('places', function (Blueprint $table) {
             $table->id();
-            $table->string("name", 3)->unique();
+            $table->string("section", 1);
+            $table->integer("number");
             $table->enum("status", ["free", "booked", "occupied"]);
             $table->timestamps();
         });

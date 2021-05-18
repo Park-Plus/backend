@@ -24,6 +24,9 @@ class DatabaseSeeder extends Seeder
         $veh = Vehicle::factory(["user_id" => $me])->create();
         $inv = Invoice::factory(["user_id" => $me])->create();
         Stay::factory(["user_id" => $me, "vehicle_id" => $veh, "status" => "ended", "invoice_id" => $inv])->create();
+        $veh = Vehicle::factory(["user_id" => $me])->create();
+        $inv = Invoice::factory(["user_id" => $me])->create();
+        Stay::factory(["user_id" => $me, "vehicle_id" => $veh, "status" => "ended", "invoice_id" => $inv])->create();
         $users = User::factory()->count(10)->create();
         $vehicles = new Collection([]);
         foreach($users as $user){
@@ -46,12 +49,11 @@ class DatabaseSeeder extends Seeder
                     $inv = Invoice::factory(["user_id" => $user->id])->create();
                     $stay = Stay::factory(["user_id" => $user->id, "vehicle_id" => $vehicles[array_rand($vehicles->toArray())]->id, "status" => "ended", "invoice_id" => $inv->id])->create();
                 }
-                echo var_dump($avStates);
             }
         }
         for($i = 1; $i < 11; $i++){
-            Place::factory(["name" => "A".$i])->create();
-            Place::factory(["name" => "B".$i])->create();
+            Place::factory(["section" => "A", "number" => $i])->create();
+            Place::factory(["section" => "B", "number" => $i])->create();
         }
     }
 }

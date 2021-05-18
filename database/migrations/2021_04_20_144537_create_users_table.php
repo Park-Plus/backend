@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('profile_picture');
             $table->string('password');
+            $table->enum('plan', ['free', 'premium'])->default('free');
             $table->timestamps();
         });
     }
