@@ -21,10 +21,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $creditCards = ['4242424242424242', '4000056655665556', '5555555555554444', '5200828282828210', '5105105105105100'];
         $me = User::factory(["name" => "Mario", "surname" => "Rossi", "cf" => "RSSMRA80A01H501U", "email" => "mario@rossi.it", "password" => Hash::make("password")])->create();
         $customer = Stripe::customers()->create([
-            'email' => 'mario@rossi.it',
+            'name' => $me->name . " " . $me->surname,
+            'email' => $me->email,
         ]);
+        $me->stripe_user_id = $customer['id'];
+        $me->save();
+        $tok = Stripe::tokens()->create([
+            'card' => [
+                'number'    => $creditCards[array_rand($creditCards)],
+                'exp_month' => rand(6, 12),
+                'cvc'       => rand(100, 999),
+                'exp_year'  => 2021,
+            ]
+        ]);
+        Stripe::cards()->create($customer['id'], $tok['id']);
         $veh = Vehicle::factory(["user_id" => $me])->create();
         $inv = Invoice::factory(["user_id" => $me])->create();
         Stay::factory(["user_id" => $me, "vehicle_id" => $veh, "status" => "ended", "invoice_id" => $inv])->create();
@@ -34,6 +47,21 @@ class DatabaseSeeder extends Seeder
         $users = User::factory()->count(10)->create();
         $vehicles = new Collection([]);
         foreach($users as $user){
+            $customer = Stripe::customers()->create([
+                'name' => $user->name . " " . $user->surname,
+                'email' => $user->email,
+            ]);
+            $user->stripe_user_id = $customer['id'];
+            $user->save();
+            $tok = Stripe::tokens()->create([
+                'card' => [
+                    'number'    => $creditCards[array_rand($creditCards)],
+                    'exp_month' => rand(6, 12),
+                    'cvc'       => rand(100, 999),
+                    'exp_year'  => 2021,
+                ]
+            ]);
+            Stripe::cards()->create($customer['id'], $tok['id']);
             $avStates = ["active", "ended"];
             $vehicles = Vehicle::factory(["user_id" => $user->id])->count(rand(1, 5))->create();
             for($i = 0; $i < 5; $i++){

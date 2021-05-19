@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('profile_picture');
             $table->string('password');
+            $table->string('stripe_user_id')->nullable();
             $table->enum('plan', ['free', 'premium'])->default('free');
             $table->timestamps();
         });

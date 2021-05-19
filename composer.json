@@ -6,11 +6,12 @@
     "type": "project",
     "require": {
         "php": "^7.3|^8.0",
+        "cartalyst/stripe-laravel": "^13.0",
+        "laravel-validation-rules/credit-card": "^1.6",
         "laravel/lumen-framework": "^8.0",
         "laravelista/lumen-vendor-publish": "^8.0",
         "pelmered/fake-car": "^1.6",
-        "tymon/jwt-auth": "^1.0",
-        "cartalyst/stripe-laravel": "^13.0"
+        "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

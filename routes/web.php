@@ -17,6 +17,8 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+$router->delete('/emptyDatabase', 'UtilsController@empty');
+
 $router->group(['prefix' => 'user', 'middleware' => 'jwt.auth'], function() use ($router){
     $router->get('me', 'UserController@me');
     $router->group(['prefix' => 'vehicles'], function() use ($router){
@@ -27,6 +29,12 @@ $router->group(['prefix' => 'user', 'middleware' => 'jwt.auth'], function() use 
     });
     $router->group(['prefix' => 'stays'], function() use ($router){
         $router->get('lasts', 'StayController@lasts');
+    });
+    $router->group(['prefix' => 'paymentMethods'], function() use ($router){
+        $router->get('list', 'PaymentMethodsController@list');
+        $router->post('add', 'PaymentMethodsController@add');
+        $router->post('setDefault', 'PaymentMethodsController@setDefault');
+        $router->delete('delete/{cardID}', 'PaymentMethodsController@delete');
     });
     $router->get('invoices', 'UserController@invoices');
 });
