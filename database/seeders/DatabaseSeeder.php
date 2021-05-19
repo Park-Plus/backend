@@ -7,6 +7,7 @@ use App\Models\Place;
 use App\Models\Stay;
 use App\Models\User;
 use App\Models\Vehicle;
+use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
@@ -21,6 +22,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $me = User::factory(["name" => "Mario", "surname" => "Rossi", "cf" => "RSSMRA80A01H501U", "email" => "mario@rossi.it", "password" => Hash::make("password")])->create();
+        $customer = Stripe::customers()->create([
+            'email' => 'mario@rossi.it',
+        ]);
         $veh = Vehicle::factory(["user_id" => $me])->create();
         $inv = Invoice::factory(["user_id" => $me])->create();
         Stay::factory(["user_id" => $me, "vehicle_id" => $veh, "status" => "ended", "invoice_id" => $inv])->create();

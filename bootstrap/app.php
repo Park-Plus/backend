@@ -61,6 +61,7 @@ $app->singleton(
 
 $app->configure('app');
 $app->configure('auth');
+$app->configure('services');
 
 /*
 |--------------------------------------------------------------------------
@@ -95,6 +96,7 @@ $app->routeMiddleware([
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+$app->register(Cartalyst\Stripe\Laravel\StripeServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 if (!class_exists('JWTAuth')) {
@@ -103,6 +105,10 @@ if (!class_exists('JWTAuth')) {
 
 if (!class_exists('JWTFactory')) {
     class_alias('Tymon\JWTAuth\Facades\JWTFactory', 'JWTFactory');
+}
+
+if (!class_exists('Stripe')) {
+    class_alias('Cartalyst\Stripe\Laravel\Facades\Stripe', 'Stripe');
 }
 
 /*
