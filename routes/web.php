@@ -21,11 +21,12 @@ $router->delete('/emptyDatabase', 'UtilsController@empty');
 
 $router->group(['prefix' => 'user', 'middleware' => 'jwt.auth'], function() use ($router){
     $router->get('me', 'UserController@me');
+    $router->get('appHomeCards', 'UserController@homeCards');
     $router->group(['prefix' => 'vehicles'], function() use ($router){
         $router->get('list', 'VehicleController@list');
         $router->get('vehicle/{vehicleID}', 'VehicleController@getByID');
         $router->post('add', 'VehicleController@insert');
-        $router->delete('remove', 'VehicleController@remove');
+        $router->delete('delete/{vehicleID}', 'VehicleController@delete');
     });
     $router->group(['prefix' => 'stays'], function() use ($router){
         $router->get('lasts', 'StayController@lasts');

@@ -53,11 +53,8 @@ class VehicleController extends Controller
         return $vehicle;
     }
 
-    public function remove(Request $request){
-        $this->validate($request, [
-            'plate' => 'required'
-        ]);
-        $vehicle = Vehicle::where('plate', $request->plate)->findOrFail();
+    public function delete(Request $request, $vehicleID){
+        $vehicle = Vehicle::findOrFail($vehicleID);
         $vehicle->delete();
         return ["ok" => true];
     }
