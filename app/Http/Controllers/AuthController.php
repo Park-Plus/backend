@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
     /**
      * Create a new AuthController instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -30,6 +27,7 @@ class AuthController extends Controller
         if (!$token = Auth::attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+
         return $this->respondWithToken($token);
     }
 
@@ -51,6 +49,7 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
+
         return response()->json(['message' => 'Successfully logged out']);
     }
 
@@ -62,13 +61,14 @@ class AuthController extends Controller
     public function refresh()
     {
         Auth::factory()->setTTL(60);
+
         return $this->respondWithToken(Auth::refresh());
     }
 
     /**
      * Get the token array structure.
      *
-     * @param  string $token
+     * @param string $token
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -77,7 +77,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => Auth::factory()->getTTL() * 60
+            'expires_in' => Auth::factory()->getTTL() * 60,
         ]);
     }
 }

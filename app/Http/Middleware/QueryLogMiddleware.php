@@ -11,8 +11,9 @@ class QueryLogMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -20,11 +21,12 @@ class QueryLogMiddleware
         app('db')->connection()->enableQueryLog();
         $req = $next($request);
         $queries = DB::getQueryLog();
-        foreach($queries as $query){
-            if(isset($query["query"])){
-                Log::info('[QUERY] ' . $query["query"]);
+        foreach ($queries as $query) {
+            if (isset($query['query'])) {
+                Log::info('[QUERY] ' . $query['query']);
             }
         }
+
         return $req;
     }
 }

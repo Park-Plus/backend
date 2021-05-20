@@ -12,7 +12,9 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
-    use Authenticatable, Authorizable, HasFactory;
+    use Authenticatable;
+    use Authorizable;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -20,7 +22,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'surname', 'cf', 'email', 'profile_picture'
+        'name', 'surname', 'cf', 'email', 'profile_picture',
     ];
 
     /**
@@ -29,7 +31,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-        'password'
+        'password',
     ];
 
     /**
@@ -52,16 +54,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return [];
     }
 
-
-    public function vehicles(){
+    public function vehicles()
+    {
         return $this->hasMany(Vehicle::class);
     }
 
-    public function invoices(){
+    public function invoices()
+    {
         return $this->hasMany(Invoice::class);
     }
 
-    public function stays(){
+    public function stays()
+    {
         return $this->hasMany(Stay::class);
     }
 }

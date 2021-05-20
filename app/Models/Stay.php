@@ -2,13 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Lumen\Auth\Authorizable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class Stay extends Model
 {
@@ -20,7 +15,7 @@ class Stay extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'vehicle_id', 'status', 'invoice_id'
+        'user_id', 'vehicle_id', 'status', 'invoice_id',
     ];
 
     /**

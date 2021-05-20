@@ -9,21 +9,21 @@ class PlaceController extends Controller
 {
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
-        //
     }
 
-    public function status(){
+    public function status()
+    {
         $places = DB::table('places')->orderBy('section')->orderBy('number')->get();
         $freePlaces = DB::table('places')->where('status', 'free')->get()->count();
-        return ["free" => $freePlaces, "list" => $places];
+
+        return ['free' => $freePlaces, 'list' => $places];
     }
-    
-    public function getFree(){
+
+    public function getFree()
+    {
         return Place::where('status', 'free')->first();
     }
 }

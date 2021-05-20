@@ -21,9 +21,10 @@ class PlaceFactory extends Factory
      */
     public function definition()
     {
-        $statuses = ["free", "booked", "occupied"];
+        $statuses = ['free', 'booked', 'occupied'];
+
         return [
-            'status' => $statuses[array_rand($statuses)]
+            'status' => $statuses[array_rand($statuses)],
         ];
     }
 }

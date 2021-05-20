@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__DIR__).'/vendor/autoload.php';
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
     dirname(__DIR__)
@@ -75,7 +75,7 @@ $app->configure('services');
 */
 
 $app->middleware([
-    App\Http\Middleware\QueryLogMiddleware::class
+    App\Http\Middleware\QueryLogMiddleware::class,
 ]);
 
 $app->routeMiddleware([
@@ -125,7 +125,7 @@ if (!class_exists('Stripe')) {
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
-    require __DIR__.'/../routes/web.php';
+    require __DIR__ . '/../routes/web.php';
 });
 
 return $app;

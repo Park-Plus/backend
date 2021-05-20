@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Place;
 use App\Models\Stay;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,9 +21,10 @@ class StayFactory extends Factory
      */
     public function definition()
     {
-        $statuses = ["active", "ended"];
+        $statuses = ['active', 'ended'];
+
         return [
-            'status' => $statuses[array_rand($statuses)]
+            'status' => $statuses[array_rand($statuses)],
         ];
     }
 }

@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use PhpParser\Node\Expr\Cast\String_;
 
 class UserFactory extends Factory
 {
@@ -24,15 +23,16 @@ class UserFactory extends Factory
     public function definition()
     {
         $this->faker->addProvider(new \Faker\Provider\it_IT\Person($this->faker));
-        $plans = ["free", "premium"];
+        $plans = ['free', 'premium'];
+
         return [
             'name' => $this->faker->firstName,
             'surname' => $this->faker->lastName,
             'cf' => $this->faker->taxId(),
             'email' => $this->faker->unique()->safeEmail,
-            'profile_picture' => "https://avatars.githubusercontent.com/u/".rand(1, 100000),
+            'profile_picture' => 'https://avatars.githubusercontent.com/u/' . rand(1, 100000),
             'password' => Hash::make('password'),
-            'plan' => $plans[array_rand($plans)]
+            'plan' => $plans[array_rand($plans)],
         ];
     }
 }
