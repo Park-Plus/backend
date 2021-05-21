@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Stay extends Model
 {
     use HasFactory;
+    public const PRICE_PER_MINUTE = 0.05;
+    public const PRICE_PER_MINUTE_PREMIUM = 0.03;
 
     /**
      * The attributes that are mass assignable.

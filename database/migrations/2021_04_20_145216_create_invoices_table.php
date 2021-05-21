@@ -16,6 +16,7 @@ class CreateInvoicesTable extends Migration
             $table->float('price');
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->enum('status', ['paid', 'unpaid']);
+            $table->string('stripe_payment_id')->nullable()->default(null);
             $table->timestamp('date_paid')->nullable()->default(null);
             $table->timestamps();
         });
