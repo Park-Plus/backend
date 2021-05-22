@@ -25,11 +25,14 @@ class UserFactory extends Factory
         $this->faker->addProvider(new \Faker\Provider\it_IT\Person($this->faker));
         $plans = ['free', 'premium'];
 
+        $name = $this->faker->firstName;
+        $surname = $this->faker->lastName;
+
         return [
-            'name' => $this->faker->firstName,
-            'surname' => $this->faker->lastName,
+            'name' => $name,
+            'surname' => $surname,
             'cf' => $this->faker->taxId(),
-            'email' => $this->faker->unique()->safeEmail,
+            'email' => substr($name, 0, 3) . '.' . $surname . "@example.it",
             'profile_picture' => 'https://avatars.githubusercontent.com/u/' . rand(1, 100000),
             'password' => Hash::make('password'),
             'plan' => $plans[array_rand($plans)],

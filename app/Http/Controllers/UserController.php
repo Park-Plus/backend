@@ -59,7 +59,13 @@ class UserController extends Controller
         } // TODO Usare un trait
         $nCard = [];
         $nCard["type"] = "NEXT_MILESTONES";
-        $nCard["title"] = "Qualche spoiler 🚀";
+        $nCard["title"] = "Qualche spoiler?";
+        $nCard["data"] = [];
+        $cards[] = $nCard;
+        return $cards;
+        $nCard = [];
+        $nCard["type"] = "TEST";
+        $nCard["title"] = "--";
         $nCard["data"] = [];
         $cards[] = $nCard;
         return $cards;
