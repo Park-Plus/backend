@@ -32,7 +32,7 @@ class UserFactory extends Factory
             'name' => $name,
             'surname' => $surname,
             'cf' => $this->faker->taxId(),
-            'email' => substr($name, 0, 3) . '.' . $surname . "@example.it",
+            'email' => strtolower(substr($name, 0, 3) . '.' . $surname . "@example.it"),
             'profile_picture' => 'https://avatars.githubusercontent.com/u/' . rand(1, 100000),
             'password' => Hash::make('password'),
             'plan' => $plans[array_rand($plans)],

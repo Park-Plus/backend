@@ -33,7 +33,7 @@ class UserController extends Controller
     }
 
     public function homePageWidgets(){
-        $isStaying = Stay::where(["user_id" => Auth::user()->id, "status" => "active"])->get();
+        $isStaying = Stay::where(["user_id" => Auth::user()->id, "status" => "active"])->first();
         $hasUnpaidInvoices = Invoice::where(["user_id" => Auth::user()->id, "status" => "unpaid"])->get();
         $cards = [];
         if(count($hasUnpaidInvoices) > 0){
@@ -43,11 +43,13 @@ class UserController extends Controller
             $nCard["data"] = ["unpaid_count" => count($hasUnpaidInvoices), "invoice" => $hasUnpaidInvoices];
             $cards[] = $nCard;
         }
-        if(count($isStaying) > 0){
+        if($isStaying){
             $nCard = [];
             $nCard["type"] = "ONGOING_STAY";
             $nCard["title"] = "Sosta in corso";
-            $nCard["data"] = ["vehicle" => Vehicle::find($isStaying[0]->vehicle_id)->first(), "stay" => $isStaying];
+            $currentStay = (time() - strtotime($isStaying->created_at)) / 60;
+            $isStaying->current_price = (Auth::user()->plan == "premium") ? round($currentStay * Stay::PRICE_PER_MINUTE_PREMIUM, 2) : round($currentStay * Stay::PRICE_PER_MINUTE, 2);
+            $nCard["data"] = ["vehicle" => Vehicle::find($isStaying->vehicle_id)->first(), "stay" => $isStaying];
             $cards[] = $nCard;
         }
         if(Auth::user()->plan == "free"){
