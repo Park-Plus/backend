@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserFactory extends Factory
 {
@@ -35,6 +36,7 @@ class UserFactory extends Factory
             'email' => strtolower(substr($name, 0, 3) . '.' . $surname . "@example.it"),
             'profile_picture' => 'https://avatars.githubusercontent.com/u/' . rand(1, 100000),
             'password' => Hash::make('password'),
+            'token_signature' => Str::random(8),
             'plan' => $plans[array_rand($plans)],
         ];
     }

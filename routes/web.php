@@ -19,7 +19,7 @@ $router->get('/', function () use ($router) {
 
 $router->delete('/emptyDatabase', 'UtilsController@empty');
 
-$router->group(['prefix' => 'user', 'middleware' => 'jwt.auth'], function () use ($router) {
+$router->group(['prefix' => 'user', 'middleware' => 'auth'], function () use ($router) {
     $router->get('me', 'UserController@me');
     $router->get('appHomeCards', 'UserController@homePageWidgets');
     $router->group(['prefix' => 'vehicles'], function () use ($router) {
@@ -42,17 +42,18 @@ $router->group(['prefix' => 'user', 'middleware' => 'jwt.auth'], function () use
     $router->get('invoices', 'UserController@invoices');
 });
 
-$router->group(['prefix' => 'park', 'middleware' => 'jwt.auth'], function () use ($router) {
+$router->post('park/setStatus', 'PlaceController@setStatus');
+
+$router->group(['prefix' => 'park', 'middleware' => 'auth'], function () use ($router) {
     $router->get('status', 'PlaceController@status');
     $router->get('getFree', 'PlaceController@getFree');
 });
 
 $router->group(['prefix' => 'auth'], function () use ($router) {
     $router->post('login', 'AuthController@login');
-    $router->post('refresh', 'AuthController@refresh');
+    $router->post('loginWithToken', 'AuthController@getNewAccessToken');
     $router->post('register', 'AuthController@create');
-    $router->group(['middleware' => 'jwt.auth'], function () use ($router) {
-        $router->post('logout', 'AuthController@logout');
+    $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->get('me', 'AuthController@me');
     });
 });
