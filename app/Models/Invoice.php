@@ -15,7 +15,7 @@ class Invoice extends Model
      * @var array
      */
     protected $fillable = [
-        'price', 'user_id',
+        'price', 'user_id', 'status', 'date_paid'
     ];
 
     /**
@@ -24,11 +24,10 @@ class Invoice extends Model
      * @var array
      */
     protected $hidden = [
-        'status', 'date_paid',
     ];
 
     public function owner()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 }

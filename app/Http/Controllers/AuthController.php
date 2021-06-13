@@ -15,7 +15,14 @@ class AuthController extends Controller
     {
 
     }
-
+    
+    /**
+     * Get a new tokens pair
+     *
+     * @param \Illuminate\Http\Request $request
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(Request $request)
     {
         $mail = $request->email;
@@ -28,7 +35,14 @@ class AuthController extends Controller
         }
     }
 
-    public function getNewAccessToken(Request $request){
+    /**
+     * Get a new access token using a refresh token
+     *
+     * @param \Illuminate\Http\Request $request
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh(Request $request){
         if(AuthenticationHelper::verifyRefreshToken(str_replace("Bearer ", "", $request->header('Authorization')))["valid"]){
             return ["ok" => true, "tokens" => AuthenticationHelper::generateAccessToken(AuthenticationHelper::verifyRefreshToken(str_replace("Bearer ", "", $request->header('Authorization')))["user"])];
         }else{

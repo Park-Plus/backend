@@ -30,14 +30,16 @@ $router->group(['prefix' => 'user', 'middleware' => 'auth'], function () use ($r
     });
     $router->group(['prefix' => 'stays'], function () use ($router) {
         $router->get('lasts', 'StayController@lasts');
-        $router->post('start', 'StayController@start');
-        $router->post('end', 'StayController@end');
     });
     $router->group(['prefix' => 'paymentMethods'], function () use ($router) {
         $router->get('list', 'PaymentMethodsController@list');
         $router->post('add', 'PaymentMethodsController@add');
         $router->post('setDefault', 'PaymentMethodsController@setDefault');
         $router->delete('delete/{cardID}', 'PaymentMethodsController@delete');
+    });
+    $router->group(['prefix' => 'invoices'], function () use ($router) {
+        $router->get('list', 'InvoiceController@list');
+        $router->post('tryUnpaid', 'InvoiceController@tryUnpaid');
     });
     $router->get('invoices', 'UserController@invoices');
 });
@@ -49,9 +51,14 @@ $router->group(['prefix' => 'park', 'middleware' => 'auth'], function () use ($r
     $router->get('getFree', 'PlaceController@getFree');
 });
 
+$router->group(['prefix' => 'park'], function () use ($router){
+    $router->post('stay/start', 'StayController@start');
+    $router->post('stay/end', 'StayController@end');
+});
+
 $router->group(['prefix' => 'auth'], function () use ($router) {
     $router->post('login', 'AuthController@login');
-    $router->post('loginWithToken', 'AuthController@getNewAccessToken');
+    $router->post('refresh', 'AuthController@refresh');
     $router->post('register', 'AuthController@create');
     $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->get('me', 'AuthController@me');
