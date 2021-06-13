@@ -41,6 +41,9 @@ $router->group(['prefix' => 'user', 'middleware' => 'auth'], function () use ($r
         $router->get('list', 'InvoiceController@list');
         $router->post('tryUnpaid', 'InvoiceController@tryUnpaid');
     });
+    $router->group(['prefix' => 'bookings'], function () use ($router) {
+        $router->get('available', 'BookingController@available');
+    });
     $router->get('invoices', 'UserController@invoices');
 });
 
