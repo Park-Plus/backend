@@ -11,6 +11,8 @@ class Stay extends Model
     public const PRICE_PER_MINUTE = 0.05;
     public const PRICE_PER_MINUTE_PREMIUM = 0.03;
 
+    public const START_TOLERANCE = 5; // Tolerance for the stay start (e.g. User has booked at 10:00, it arrives at 09:55, booking is still considered)
+
     /**
      * The attributes that are mass assignable.
      *

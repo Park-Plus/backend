@@ -42,7 +42,10 @@ $router->group(['prefix' => 'user', 'middleware' => 'auth'], function () use ($r
         $router->post('tryUnpaid', 'InvoiceController@tryUnpaid');
     });
     $router->group(['prefix' => 'bookings'], function () use ($router) {
-        $router->get('available', 'BookingController@available');
+        $router->get('', 'BookingController@list');
+        $router->post('available', 'BookingController@available');
+        $router->post('book', 'BookingController@book');
+        $router->delete('delete/{bookingId}', 'BookingController@delete');
     });
     $router->get('invoices', 'UserController@invoices');
 });

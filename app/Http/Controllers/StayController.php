@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
 use App\Models\Invoice;
 use App\Models\Stay;
 use App\Models\User;
@@ -52,6 +53,12 @@ class StayController extends Controller
             $stay->status = "active";
             $stay->invoice_id = null;
             $stay->save();
+            $booking = Booking::where(['user_id' => $user->id, 'status' => 'pending'])->where('start', '<', date("Y-m-d H:i:s", time() + (Stay::START_TOLERANCE * 60)))->first();
+            if($booking){
+                $booking->stay_id = $stay->id;
+                $booking->status = "active";
+                $booking->save();
+            }
             return ["ok" => true, "data" => $stay];
         }elseif(count($unpaidInvoice) > 0){
             return ["ok" => false, "data" => "User has an unpaid invoice"];
@@ -73,7 +80,14 @@ class StayController extends Controller
         $start = strtotime($stay->created_at);
         $end = strtotime($stay->updated_at);
         $stayTime = ($end - $start) / 60;
-        $invoicePrice = round($stayTime * Stay::PRICE_PER_MINUTE, 2) + 0.5;
+        $invoicePrice = round($stayTime * Stay::PRICE_PER_MINUTE, 2) + 0.5; // TODO: Rimuovere sovrapprezzo
+        $booking = Booking::where(['stay_id'=> $stay->id, 'status' => 'active'])->first();
+        if($booking && $user->plan == 'free'){
+            $preBookingTime = (strtotime($stay->created_at) - strtotime($booking->created_at)) / 60;
+            $invoicePrice = $invoicePrice + round($preBookingTime * Booking::PRICE_PER_MINUTE_BOOKING, 2);
+            $booking->status = "ended";
+            $booking->save();
+        }
         $inv = new Invoice;
         $inv->user_id = $user->id;
         $inv->price = $invoicePrice;

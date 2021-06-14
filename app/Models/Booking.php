@@ -9,6 +9,8 @@ class Booking extends Model
 {
     use HasFactory;
 
+    public const PRICE_PER_MINUTE_BOOKING = 0.01;
+
     /**
      * The attributes that are mass assignable.
      *
