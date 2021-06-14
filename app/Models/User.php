@@ -30,7 +30,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-        'password', 'token_signature'
+        'password', 'token_signature',
     ];
 
     public function vehicles()

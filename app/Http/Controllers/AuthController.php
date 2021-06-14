@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
 use App\Libraries\AuthenticationHelper;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\UnauthorizedException;
 
@@ -13,14 +13,13 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-
     }
-    
+
     /**
-     * Get a new tokens pair
+     * Get a new tokens pair.
      *
      * @param \Illuminate\Http\Request $request
-     * 
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request)
@@ -28,26 +27,27 @@ class AuthController extends Controller
         $mail = $request->email;
         $password = $request->password;
         $user = User::where('email', $mail)->firstOrFail();
-        if(Hash::check($password, $user->password)){
-            return ["ok" => true, "tokens" => AuthenticationHelper::generateTokensPair($user)];
-        }else{
-            throw new UnauthorizedException('', 'Authentication failed!');
+        if (Hash::check($password, $user->password)) {
+            return ['ok' => true, 'tokens' => AuthenticationHelper::generateTokensPair($user)];
         }
+
+        throw new UnauthorizedException('', 'Authentication failed!');
     }
 
     /**
-     * Get a new access token using a refresh token
+     * Get a new access token using a refresh token.
      *
      * @param \Illuminate\Http\Request $request
-     * 
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh(Request $request){
-        if(AuthenticationHelper::verifyRefreshToken(str_replace("Bearer ", "", $request->header('Authorization')))["valid"]){
-            return ["ok" => true, "tokens" => AuthenticationHelper::generateAccessToken(AuthenticationHelper::verifyRefreshToken(str_replace("Bearer ", "", $request->header('Authorization')))["user"])];
-        }else{
-            throw new UnauthorizedException('Refresh token is invalid.');
+    public function refresh(Request $request)
+    {
+        if (AuthenticationHelper::verifyRefreshToken(str_replace('Bearer ', '', $request->header('Authorization')))['valid']) {
+            return ['ok' => true, 'tokens' => AuthenticationHelper::generateAccessToken(AuthenticationHelper::verifyRefreshToken(str_replace('Bearer ', '', $request->header('Authorization')))['user'])];
         }
+
+        throw new UnauthorizedException('Refresh token is invalid.');
     }
 
     /**
@@ -59,7 +59,6 @@ class AuthController extends Controller
     {
         return Auth::user();
     }
-
 
     /**
      * Get the token array structure.

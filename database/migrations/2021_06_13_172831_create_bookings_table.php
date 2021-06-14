@@ -8,15 +8,13 @@ class CreateBookingsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->enum('status', ["pending", "active", "ended", "canceled"]);
+            $table->enum('status', ['pending', 'active', 'ended', 'canceled']);
             $table->dateTime('start');
             $table->dateTime('end');
             $table->foreignId('place_id')->constrained('places')->onUpdate('cascade')->onDelete('cascade');
@@ -27,8 +25,6 @@ class CreateBookingsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

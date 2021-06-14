@@ -5,7 +5,6 @@ namespace App\Providers;
 use App\Libraries\AuthenticationHelper;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -28,7 +27,7 @@ class AuthServiceProvider extends ServiceProvider
         // the User instance via an API token or any other method necessary.
         Auth::viaRequest('api', function ($request) {
             if ($request->header('Authorization')) {
-                return AuthenticationHelper::getUserByToken(str_replace("Bearer ", "", $request->header("Authorization")));
+                return AuthenticationHelper::getUserByToken(str_replace('Bearer ', '', $request->header('Authorization')));
             }
         });
     }

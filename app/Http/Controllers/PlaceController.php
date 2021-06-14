@@ -30,11 +30,12 @@ class PlaceController extends Controller
 
     public function setStatus(Request $request)
     {
-        $status = $request->input("status");
-        $parkID = $request->input("park_id");
-        $pl = Place::where(['section'=> str_split($parkID)[0], 'number' => str_split($parkID)[1]])->firstOrFail();
+        $status = $request->input('status');
+        $parkID = $request->input('park_id');
+        $pl = Place::where(['section' => str_split($parkID)[0], 'number' => str_split($parkID)[1]])->firstOrFail();
         $pl->status = $status;
         $pl->save();
+
         return $pl;
     }
 }

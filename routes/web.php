@@ -57,7 +57,7 @@ $router->group(['prefix' => 'park', 'middleware' => 'auth'], function () use ($r
     $router->get('getFree', 'PlaceController@getFree');
 });
 
-$router->group(['prefix' => 'park'], function () use ($router){
+$router->group(['prefix' => 'park'], function () use ($router) {
     $router->post('stay/start', 'StayController@start');
     $router->post('stay/end', 'StayController@end');
 });
