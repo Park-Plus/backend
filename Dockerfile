@@ -2,7 +2,7 @@ FROM php:7.4-apache
 
 # Install PHP and composer dependencies
 RUN apt-get update
-RUN apt-get install -y git curl libmcrypt-dev libjpeg-dev libpng-dev libonig-dev libfreetype6-dev libbz2-dev libzip-dev zip unzip
+RUN apt-get install -y git curl libmcrypt-dev libjpeg-dev libpng-dev libonig-dev libfreetype6-dev libbz2-dev libzip-dev zip unzip cron
 
 ENV APP_HOME /var/www/html
 
@@ -33,3 +33,10 @@ RUN echo "xdebug.start_with_request=yes" >> $PHP_INI_DIR/conf.d/docker-php-ext-x
 RUN echo "xdebug.discover_client_host=1" >> $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
 RUN echo "xdebug.idekey=BEST_IDE" >> $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
 RUN echo "xdebug.client_host=host.docker.internal" >> $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
+
+RUN echo "Setupping CRON"
+
+RUN echo "* * * * * root php /var/www/html/artisan schedule:run >> /var/log/cron.log 2>&1" >> /etc/crontab
+
+RUN touch /var/log/cron.log
+

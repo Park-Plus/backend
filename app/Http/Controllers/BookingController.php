@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Place;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -40,7 +41,7 @@ class BookingController extends Controller
                 $previousBookingExists = Booking::where(function ($query) use ($start) {
                     $query->where('start', '<', $start)
                         ->where('end', '<', $start);
-                })->where('place_id', $place->id)->count();
+                })->where('place_id', $place->id)->whereDate('end', Carbon::today())->count();
                 if ($previousBookingExists > 0) {
                     $place['previousBookings'] = ['count' => $previousBookingExists];
                 }

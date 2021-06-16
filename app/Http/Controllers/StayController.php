@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Libraries\PaymentsHelper;
 use App\Models\Booking;
 use App\Models\Invoice;
 use App\Models\Stay;
@@ -100,14 +101,7 @@ class StayController extends Controller
         $inv->save();
         $stay->invoice_id = $inv->id;
         $stay->save();
-        $charge = Stripe::charges()->create([
-            'customer' => $user->stripe_user_id,
-            'currency' => 'EUR',
-            'amount' => $invoicePrice,
-            'description' => 'Park+ automatic charge for stay #' . $stay->id . ' on ' . date('d/m/Y'),
-            'statement_descriptor' => 'P+',
-            'statement_descriptor_suffix' => 'PARK+: ' . date('d/m'),
-        ]);
+        $charge = PaymentsHelper::generatePayment($user->stripe_user_id, $invoicePrice, 'Park+ automatic charge for stay #' . $stay->id . ' on ' . date('d/m/Y'));
         if ($charge['status'] == 'succeeded') {
             $inv->status = 'paid';
             $inv->stripe_payment_id = $charge['id'];
