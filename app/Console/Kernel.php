@@ -31,20 +31,20 @@ class Kernel extends ConsoleKernel
     {
         $schedule->call(function () {
             $expiredBookings = Booking::whereDate('end', '<', Carbon::now())->get();
-            foreach($expiredBookings as $booking){
-                Log::info("[BOOKING " . $booking->id . "] Setting as terminated...");
-                $booking->status = "ended";
+            foreach ($expiredBookings as $booking) {
+                Log::info('[BOOKING ' . $booking->id . '] Setting as terminated...');
+                $booking->status = 'ended';
                 $booking->save();
                 $user = User::find($booking->user_id);
-                if($booking->stay_id == null && $user->plan == "free"){
-                    Log::info("[BOOKING " . $booking->id . "] Attempt booking payment...");
-                    $invoicePrice = Booking::PRICE_PER_MINUTE_BOOKING * round((strtotime($booking->end) - strtotime($booking->created_at))/60);
+                if ($booking->stay_id == null && $user->plan == 'free') {
+                    Log::info('[BOOKING ' . $booking->id . '] Attempt booking payment...');
+                    $invoicePrice = Booking::PRICE_PER_MINUTE_BOOKING * round((strtotime($booking->end) - strtotime($booking->created_at)) / 60);
                     $inv = new Invoice();
                     $inv->user_id = $user->id;
                     $inv->price = $invoicePrice;
                     $inv->status = 'unpaid';
                     $inv->save();
-                    $charge = PaymentsHelper::generatePayment($user->stripe_user_id, Booking::PRICE_PER_MINUTE_BOOKING * round((strtotime($booking->end) - strtotime($booking->created_at))/60), "Park+ automatic charge for booking #".$booking->id);
+                    $charge = PaymentsHelper::generatePayment($user->stripe_user_id, Booking::PRICE_PER_MINUTE_BOOKING * round((strtotime($booking->end) - strtotime($booking->created_at)) / 60), 'Park+ automatic charge for booking #' . $booking->id);
                     if ($charge['status'] == 'succeeded') {
                         $inv->status = 'paid';
                         $inv->stripe_payment_id = $charge['id'];

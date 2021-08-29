@@ -8,7 +8,6 @@ use App\Models\Invoice;
 use App\Models\Stay;
 use App\Models\User;
 use App\Models\Vehicle;
-use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
