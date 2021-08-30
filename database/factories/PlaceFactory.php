@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Vehicle;
+use App\Models\Place;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class VehicleFactory extends Factory
+class PlaceFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Vehicle::class;
+    protected $model = Place::class;
 
     /**
      * Define the model's default state.
@@ -21,11 +21,10 @@ class VehicleFactory extends Factory
      */
     public function definition()
     {
-        $this->faker->addProvider(new \Faker\Provider\Fakecar($this->faker));
+        $statuses = ['free', 'booked', 'occupied'];
 
         return [
-            'name' => $this->faker->vehicle,
-            'plate' => $this->faker->unique()->vehicleRegistration('[A-G]{2}[0-9]{3}[A-Z]{2}'),
+            'status' => $statuses[array_rand($statuses)],
         ];
     }
 }

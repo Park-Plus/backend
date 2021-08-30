@@ -2,35 +2,52 @@
 
 namespace App\Http\Controllers;
 
+use App\Libraries\AuthenticationHelper;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\UnauthorizedException;
 
 class AuthController extends Controller
 {
-    /**
-     * Create a new AuthController instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'refresh']]);
     }
 
     /**
-     * Get a JWT via given credentials.
+     * Get a new tokens pair.
+     *
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(Request $request)
     {
-        $credentials = request(['email', 'password']);
-        Auth::factory()->setTTL(1);
-        Auth::factory()->setRefreshTTL(60);
-        if (!$token = Auth::attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        $mail = $request->email;
+        $password = $request->password;
+        $user = User::where('email', $mail)->firstOrFail();
+        if (Hash::check($password, $user->password)) {
+            return ['ok' => true, 'tokens' => AuthenticationHelper::generateTokensPair($user)];
         }
-        return $this->respondWithToken($token);
+
+        throw new UnauthorizedException('', 'Authentication failed!');
+    }
+
+    /**
+     * Get a new access token using a refresh token.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh(Request $request)
+    {
+        if (AuthenticationHelper::verifyRefreshToken(str_replace('Bearer ', '', $request->header('Authorization')))['valid']) {
+            return ['ok' => true, 'tokens' => AuthenticationHelper::generateAccessToken(AuthenticationHelper::verifyRefreshToken(str_replace('Bearer ', '', $request->header('Authorization')))['user'])];
+        }
+
+        throw new UnauthorizedException('Refresh token is invalid.');
     }
 
     /**
@@ -44,31 +61,9 @@ class AuthController extends Controller
     }
 
     /**
-     * Log the user out (Invalidate the token).
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function logout()
-    {
-        Auth::logout();
-        return response()->json(['message' => 'Successfully logged out']);
-    }
-
-    /**
-     * Refresh a token.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function refresh()
-    {
-        Auth::factory()->setTTL(1);
-        return $this->respondWithToken(Auth::refresh());
-    }
-
-    /**
      * Get the token array structure.
      *
-     * @param  string $token
+     * @param string $token
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -77,7 +72,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => Auth::factory()->getTTL() * 60
+            'expires_in' => Auth::factory()->getTTL() * 60,
         ]);
     }
 }

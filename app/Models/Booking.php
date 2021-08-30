@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Invoice extends Model
+class Booking extends Model
 {
     use HasFactory;
+
+    public const PRICE_PER_MINUTE_BOOKING = 0.01;
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +17,7 @@ class Invoice extends Model
      * @var array
      */
     protected $fillable = [
-        'price', 'user_id', 'status', 'date_paid',
+        'user_id', 'start', 'end', 'place_id', 'stay_id',
     ];
 
     /**

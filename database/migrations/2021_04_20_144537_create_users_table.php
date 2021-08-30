@@ -8,8 +8,6 @@ class CreateUsersTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -21,14 +19,15 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('profile_picture');
             $table->string('password');
+            $table->string('token_signature', 8);
+            $table->string('stripe_user_id')->nullable();
+            $table->enum('plan', ['free', 'premium'])->default('free');
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

@@ -4,20 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInvoicesTable extends Migration
+class CreateStaysTable extends Migration
 {
     /**
      * Run the migrations.
      */
     public function up()
     {
-        Schema::create('invoices', function (Blueprint $table) {
+        Schema::create('stays', function (Blueprint $table) {
             $table->id();
-            $table->float('price');
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->enum('status', ['paid', 'unpaid']);
-            $table->string('stripe_payment_id')->nullable()->default(null);
-            $table->timestamp('date_paid')->nullable()->default(null);
+            $table->foreignId('vehicle_id')->constrained('vehicles')->onUpdate('cascade')->onDelete('cascade');
+            $table->enum('status', ['active', 'ended']);
+            $table->foreignId('invoice_id')->nullable()->default(null)->constrained('invoices')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ class CreateInvoicesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invoices');
+        Schema::dropIfExists('stays');
     }
 }

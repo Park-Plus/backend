@@ -15,7 +15,7 @@ class Vehicle extends Model
      * @var array
      */
     protected $fillable = [
-        'plate', 'name', 'user_id'
+        'plate', 'name', 'user_id',
     ];
 
     /**
@@ -26,7 +26,8 @@ class Vehicle extends Model
     protected $hidden = [
     ];
 
-    public function owner(){
+    public function owner()
+    {
         return $this->hasOne(User::class);
     }
 }

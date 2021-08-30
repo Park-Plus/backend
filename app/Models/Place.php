@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Invoice extends Model
+class Place extends Model
 {
     use HasFactory;
 
@@ -15,7 +15,7 @@ class Invoice extends Model
      * @var array
      */
     protected $fillable = [
-        'price', 'user_id', 'status', 'date_paid',
+        'section', 'number', 'status',
     ];
 
     /**
@@ -26,8 +26,9 @@ class Invoice extends Model
     protected $hidden = [
     ];
 
-    public function owner()
-    {
-        return $this->belongsTo(User::class);
-    }
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
 }

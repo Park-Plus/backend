@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Invoice;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
 
 class InvoiceFactory extends Factory
 {
@@ -23,8 +22,8 @@ class InvoiceFactory extends Factory
     public function definition()
     {
         return [
-            'price' => mt_rand (0*10, 100*10) / 10,
-            'status' => 'unpaid'
+            'price' => mt_rand(0 * 10, 100 * 10) / 10,
+            'status' => 'unpaid',
         ];
     }
 }
