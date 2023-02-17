@@ -7,7 +7,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "cartalyst/stripe-laravel": "^13.0",
-        "firebase/php-jwt": "^5.3",
+        "firebase/php-jwt": "^6.0",
         "friendsofphp/php-cs-fixer": "^2.18",
         "laravel-validation-rules/credit-card": "^1.6",
         "laravel/lumen-framework": "^8.0",
